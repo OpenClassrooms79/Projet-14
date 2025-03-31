@@ -1,3 +1,10 @@
+*.idea
+*.lnk
+*.odt
+*.pdf
+*.txt
+desktop.ini
+
 php.local.ini
 .php-version
 
