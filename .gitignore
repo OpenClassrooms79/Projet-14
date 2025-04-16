@@ -3,6 +3,7 @@
 *.odt
 *.pdf
 *.txt
+*.url
 desktop.ini
 
 php.local.ini
