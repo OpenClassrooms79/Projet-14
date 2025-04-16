@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -31,6 +33,17 @@ class Tag
     #[Column(length: 30)]
     private string $name;
 
+    /**
+     * @var Collection<int, VideoGame>
+     */
+    #[ORM\ManyToMany(targetEntity: VideoGame::class, mappedBy: 'tags')]
+    private Collection $videoGames;
+
+    public function __construct()
+    {
+        $this->videoGames = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -41,6 +54,12 @@ class Tag
         return $this->code;
     }
 
+    public function setCode(string $code): Tag
+    {
+        $this->code = $code;
+        return $this;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -49,6 +68,33 @@ class Tag
     public function setName(string $name): Tag
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VideoGame>
+     */
+    public function getVideoGames(): Collection
+    {
+        return $this->videoGames;
+    }
+
+    public function addVideoGame(VideoGame $videoGame): static
+    {
+        if (!$this->videoGames->contains($videoGame)) {
+            $this->videoGames->add($videoGame);
+            $videoGame->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideoGame(VideoGame $videoGame): static
+    {
+        if ($this->videoGames->removeElement($videoGame)) {
+            $videoGame->removeTag($this);
+        }
+
         return $this;
     }
 }

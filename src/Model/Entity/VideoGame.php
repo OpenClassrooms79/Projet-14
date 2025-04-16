@@ -223,6 +223,22 @@ class VideoGame
         return $this->tags;
     }
 
+    public function addTag(Tag $tag): static
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): static
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
     /**
      * @return Collection<Review>
      */
@@ -233,6 +249,6 @@ class VideoGame
 
     public function hasAlreadyReview(User $user): bool
     {
-        return $this->reviews->exists(static fn (int $key, Review $review): bool => $review->getUser() === $user);
+        return $this->reviews->exists(static fn(int $key, Review $review): bool => $review->getUser() === $user);
     }
 }

@@ -11,9 +11,11 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\Validator\Constraints\Range;
 
 #[Entity]
+#[UniqueConstraint(name: 'UNIQUE_VIDEOGAME_USER', columns: ['video_game_id', 'user_id'])]
 class Review
 {
     #[Id]
