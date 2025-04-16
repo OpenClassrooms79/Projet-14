@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Model\Entity\Review;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
@@ -18,7 +19,10 @@ final class ReviewFactory extends PersistentProxyObjectFactory
      *
      * @todo inject services if required
      */
-    public function __construct() {}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+        parent::__construct();
+    }
 
     public static function class(): string
     {
@@ -32,11 +36,26 @@ final class ReviewFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
+        // boucle jusqu'à ce que l'on trouve une combinaison unique
+        do {
+            $user = UserFactory::random();
+            $videoGame = VideoGameFactory::random();
+
+            // Vérification dans la base de données si la combinaison existe déjà
+            $existingReview = $this->entityManager
+                ->getRepository(Review::class)
+                ->findOneBy([
+                    'user' => $user->getId(),  // Utiliser l'ID du user
+                    'videoGame' => $videoGame->getId(),  // Utiliser l'ID du jeu vidéo
+                ]);
+        } while ($existingReview); // tant qu'on trouve une combinaison existante, on recommence
+
+        // générer le reste des données
         return [
+            'user' => $user,
+            'videoGame' => $videoGame,
             'rating' => self::faker()->numberBetween(1, 5),
             'comment' => self::faker()->paragraphs(1, true),
-            'user' => UserFactory::random(),
-            'videoGame' => VideoGameFactory::random(),
         ];
     }
 
