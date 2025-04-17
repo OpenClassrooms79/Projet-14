@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Rating\RatingHandler;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -201,6 +202,9 @@ class VideoGame
 
     public function getAverageRating(): ?int
     {
+        $ratingHandler = new RatingHandler();
+        $ratingHandler->calculateAverage($this);
+
         return $this->averageRating;
     }
 
@@ -245,6 +249,22 @@ class VideoGame
     public function getReviews(): Collection
     {
         return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        $this->reviews->removeElement($review);
+
+        return $this;
     }
 
     public function hasAlreadyReview(User $user): bool

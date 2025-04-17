@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Repository\ReviewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\Validator\Constraints\Range;
 
-#[Entity]
+#[Entity(repositoryClass: ReviewRepository::class)]
 #[UniqueConstraint(name: 'UNIQUE_VIDEOGAME_USER', columns: ['video_game_id', 'user_id'])]
 class Review
 {
