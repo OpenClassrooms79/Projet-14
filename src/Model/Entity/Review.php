@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Repository\ReviewRepository;
+use App\Doctrine\Repository\ReviewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
