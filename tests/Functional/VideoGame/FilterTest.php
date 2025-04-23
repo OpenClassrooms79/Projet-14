@@ -8,6 +8,12 @@ use App\Tests\Functional\FunctionalTestCase;
 
 final class FilterTest extends FunctionalTestCase
 {
+    /**
+     * @return iterable<string, array{
+     *     tags: array<int>,
+     *     expectedCount: int
+     * }>
+     */
     public static function filterTagsDataProvider(): array
     {
         return [
@@ -43,6 +49,8 @@ final class FilterTest extends FunctionalTestCase
     /**
      * @dataProvider filterTagsDataProvider
      *
+     * @param array $tags
+     * @param int $expectedCount
      * @return void
      */
     public function testShouldFilterVideoGamesByTags(array $tags, int $expectedCount): void

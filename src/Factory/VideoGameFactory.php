@@ -11,7 +11,8 @@ use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 /**
  * @extends PersistentProxyObjectFactory<VideoGame>
  */
-final class VideoGameFactory extends PersistentProxyObjectFactory{
+final class VideoGameFactory extends PersistentProxyObjectFactory
+{
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -26,12 +27,13 @@ final class VideoGameFactory extends PersistentProxyObjectFactory{
         return VideoGame::class;
     }
 
-        /**
+    /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      * @todo add your default values here
      */
-    protected function defaults(): array|callable    {
+    protected function defaults(): array|callable
+    {
         return [
             'description' => self::faker()->text(),
             'releaseDate' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
@@ -39,7 +41,7 @@ final class VideoGameFactory extends PersistentProxyObjectFactory{
         ];
     }
 
-        /**
+    /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
     protected function initialize(): static

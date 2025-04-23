@@ -13,7 +13,8 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
 {
     public function __construct(
         private readonly Generator $faker,
-    ) {}
+    ) {
+    }
 
     public function load(ObjectManager $manager): void
     {

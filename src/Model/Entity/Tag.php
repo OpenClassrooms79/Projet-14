@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\Table;
 use Gedmo\Mapping\Annotation\Slug;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 #[Entity]
 #[Table('`tag`')]
@@ -36,7 +37,7 @@ class Tag
     /**
      * @var Collection<int, VideoGame>
      */
-    #[ORM\ManyToMany(targetEntity: VideoGame::class, mappedBy: 'tags')]
+    #[ManyToMany(targetEntity: VideoGame::class, mappedBy: 'tags')]
     private Collection $videoGames;
 
     public function __construct()

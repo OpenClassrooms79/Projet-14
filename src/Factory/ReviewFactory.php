@@ -65,6 +65,6 @@ final class ReviewFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this// ->afterInstantiate(function(Review $review): void {})
-            ;
+        ;
     }
 }
