@@ -5,6 +5,9 @@ on:
     branches:
       - '**'  # Déclenche l'action sur toutes les branches
 
+permissions:
+  contents: read
+  
 jobs:
   ci:
     name: Continuous Integration
