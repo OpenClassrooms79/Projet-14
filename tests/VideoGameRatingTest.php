@@ -25,13 +25,13 @@ class VideoGameRatingTest extends WebTestCase
         $client = static::createClient();
 
         // aller sur la page d'authentification, remplir et soumettre le formulaire
-        $crawler = $client->request('GET', 'https://127.0.0.1:8000/auth/login');
+        $crawler = $client->request('GET', '/auth/login');
         $form = $crawler->selectButton('Se connecter')->form([
             'email' => 'user+0@email.com',
             'password' => 'password',
         ]);
         $client->submit($form);
-        self::assertResponseRedirects('https://127.0.0.1:8000/');
+        self::assertResponseRedirects('/');
     }
 
     /**
@@ -88,7 +88,7 @@ class VideoGameRatingTest extends WebTestCase
     public function addReview(KernelBrowser $client, User $user, int $videoGameId, string $comment, int $rating): void
     {
         // aller sur la page d'un jeu vidéo
-        $crawler = $client->request('GET', sprintf('https://127.0.0.1:8000/jeu-video-%d', $videoGameId));
+        $crawler = $client->request('GET', sprintf('/jeu-video-%d', $videoGameId));
 
         // vérifier dans le code de la page la présence du formulaire d'ajout de note
         self::assertSelectorExists('FORM[name=review]');
