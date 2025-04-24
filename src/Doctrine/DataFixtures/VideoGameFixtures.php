@@ -4,6 +4,7 @@ namespace App\Doctrine\DataFixtures;
 
 use App\Factory\TagFactory;
 use App\Factory\VideoGameFactory;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,8 +14,7 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
 {
     public function __construct(
         private readonly Generator $faker,
-    ) {
-    }
+    ) {}
 
     public function load(ObjectManager $manager): void
     {
@@ -22,7 +22,7 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
             return [
                 'title' => sprintf('Jeu vidéo %d', $index),
                 'description' => $this->faker->paragraphs(10, true),
-                'releaseDate' => new \DateTimeImmutable(),
+                'releaseDate' => new DateTimeImmutable(),
                 'test' => $this->faker->paragraphs(6, true),
                 'rating' => $this->faker->numberBetween(1, 5),
                 'imageName' => sprintf('video_game_%d.png', $index),

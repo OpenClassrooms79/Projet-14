@@ -34,9 +34,8 @@ final class Pagination implements IteratorAggregate, Countable
         private int $page,
         private int $limit,
         private Sorting $sorting,
-        private Direction $direction
-    ) {
-    }
+        private Direction $direction,
+    ) {}
 
     public function getOffset(): int
     {
@@ -67,7 +66,7 @@ final class Pagination implements IteratorAggregate, Countable
     }
 
     /**
-     * @return Traversable<string, int>
+     * @return Traversable<Page>
      */
     public function getIterator(): Traversable
     {
@@ -88,7 +87,7 @@ final class Pagination implements IteratorAggregate, Countable
             $this->count,
             $this->getOffset() + 1,
             $this->getOffset() + $this->count,
-            $this->total
+            $this->total,
         );
     }
 
@@ -102,11 +101,17 @@ final class Pagination implements IteratorAggregate, Countable
         return $this->limit;
     }
 
+    /**
+     * @return array<Direction>
+     */
     public function getDirections(): array
     {
         return Direction::cases();
     }
 
+    /**
+     * @return array<Sorting>
+     */
     public function getAllSorting(): array
     {
         return Sorting::cases();

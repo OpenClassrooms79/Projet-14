@@ -71,8 +71,6 @@ class VideoGameRatingTest extends WebTestCase
 
         // vérifier que le formulaire n'est plus affiché pour cet utilisateur
         self::assertSelectorNotExists('FORM[name=review]');
-
-        $this->addReview($client, $user, 7, 'deuxième commentaire', 2);
     }
 
     /**
@@ -83,7 +81,7 @@ class VideoGameRatingTest extends WebTestCase
     public function testRatingFormNotDisplayedIfNotLoggedIn(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', 'https://127.0.0.1:8000/jeu-video-7');
+        $client->request('GET', 'https://127.0.0.1:8000/jeu-video-7');
         self::assertSelectorNotExists('FORM[name=review]');
     }
 

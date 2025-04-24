@@ -7,6 +7,8 @@ namespace App\Rating;
 use App\Model\Entity\Review;
 use App\Model\Entity\VideoGame;
 
+use function count;
+
 final readonly class RatingHandler implements CalculateAverageRating, CountRatingsPerValue
 {
     public function calculateAverage(VideoGame $videoGame): void
@@ -18,9 +20,9 @@ final readonly class RatingHandler implements CalculateAverageRating, CountRatin
 
         $ratingsSum = array_sum(
             array_map(
-                static fn (Review $review): int => $review->getRating(),
-                $videoGame->getReviews()->toArray()
-            )
+                static fn(Review $review): int => $review->getRating(),
+                $videoGame->getReviews()->toArray(),
+            ),
         );
 
         $videoGame->setAverageRating((int) ceil($ratingsSum / count($videoGame->getReviews())));

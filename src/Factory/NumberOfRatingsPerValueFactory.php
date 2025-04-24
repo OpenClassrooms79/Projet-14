@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Model\Entity\NumberOfRatingPerValue;
+use App\Model\Entity\NumberOfRatingsPerValue;
 use Zenstruck\Foundry\ObjectFactory;
 
 /**
- * @extends ObjectFactory<NumberOfRatingPerValue>
+ * @extends ObjectFactory<NumberOfRatingsPerValue>
  */
-final class NumberOfRatingPerValueFactory extends ObjectFactory
+final class NumberOfRatingsPerValueFactory extends ObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -17,11 +17,12 @@ final class NumberOfRatingPerValueFactory extends ObjectFactory
      */
     public function __construct()
     {
+        parent::__construct();
     }
 
     public static function class(): string
     {
-        return NumberOfRatingPerValue::class;
+        return NumberOfRatingsPerValue::class;
     }
 
     /**
@@ -40,7 +41,7 @@ final class NumberOfRatingPerValueFactory extends ObjectFactory
      */
     protected function initialize(): static
     {
-        return $this// ->afterInstantiate(function(NumberOfRatingPerValue $numberOfRatingPerValue): void {})
-        ;
+        return $this// ->afterInstantiate(function(NumberOfRatingsPerValue $numberOfRatingsPerValue): void {})
+            ;
     }
 }

@@ -10,18 +10,20 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final readonly class UserListener
 {
-    public function __construct(private UserPasswordHasherInterface $passwordHasher)
-    {
-    }
+    public function __construct(private UserPasswordHasherInterface $passwordHasher) {}
 
     #[PrePersist]
     public function hashPassword(User $user): void
     {
+        if ($user->getPlainPassword() === null) {
+            return;
+        }
+        
         $user->setPassword(
             $this->passwordHasher->hashPassword(
                 $user,
-                $user->getPlainPassword()
-            )
+                $user->getPlainPassword(),
+            ),
         );
     }
 }

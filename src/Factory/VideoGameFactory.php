@@ -20,6 +20,7 @@ final class VideoGameFactory extends PersistentProxyObjectFactory
      */
     public function __construct()
     {
+        parent::__construct();
     }
 
     public static function class(): string
@@ -46,8 +47,7 @@ final class VideoGameFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(VideoGame $videoGame): void {})
-        ;
+        return $this// ->afterInstantiate(function(VideoGame $videoGame): void {})
+            ;
     }
 }

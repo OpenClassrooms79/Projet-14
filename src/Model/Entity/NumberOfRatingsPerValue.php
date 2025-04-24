@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
 
 #[Embeddable]
-class NumberOfRatingPerValue
+class NumberOfRatingsPerValue
 {
     #[Column]
     private int $numberOfOne = 0;

@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\Model\Entity\NumberOfRatingPerValue;
+use App\Model\Entity\NumberOfRatingsPerValue;
 use App\Model\Entity\Review;
 use App\Model\Entity\VideoGame;
 use App\Rating\RatingHandler;
@@ -14,25 +14,25 @@ class NoteCountTest extends TestCase
     {
         $videoGame = new VideoGame();
 
-        $expectedNumberOfRatingPerValue = new NumberOfRatingPerValue();
+        $expectedNumberOfRatingsPerValue = new NumberOfRatingsPerValue();
 
         for ($i = 0; $i < 100; $i++) {
             $rating = random_int(1, 5);
             switch ($rating) {
                 case 1:
-                    $expectedNumberOfRatingPerValue->increaseOne();
+                    $expectedNumberOfRatingsPerValue->increaseOne();
                     break;
                 case 2:
-                    $expectedNumberOfRatingPerValue->increaseTwo();
+                    $expectedNumberOfRatingsPerValue->increaseTwo();
                     break;
                 case 3:
-                    $expectedNumberOfRatingPerValue->increaseThree();
+                    $expectedNumberOfRatingsPerValue->increaseThree();
                     break;
                 case 4:
-                    $expectedNumberOfRatingPerValue->increaseFour();
+                    $expectedNumberOfRatingsPerValue->increaseFour();
                     break;
                 case 5:
-                    $expectedNumberOfRatingPerValue->increaseFive();
+                    $expectedNumberOfRatingsPerValue->increaseFive();
                     break;
             }
             $videoGame->addReview((new Review())->setRating($rating));
@@ -41,6 +41,6 @@ class NoteCountTest extends TestCase
         $ratingHandler = new RatingHandler();
         $ratingHandler->countRatingsPerValue($videoGame);
 
-        self::assertEquals($expectedNumberOfRatingPerValue, $videoGame->getNumberOfRatingsPerValue());
+        self::assertEquals($expectedNumberOfRatingsPerValue, $videoGame->getNumberOfRatingsPerValue());
     }
 }

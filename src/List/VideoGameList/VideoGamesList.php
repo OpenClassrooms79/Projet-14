@@ -33,15 +33,17 @@ final class VideoGamesList implements Countable, IteratorAggregate
 
     private string $route;
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $routeParameters;
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
         private FormFactoryInterface $formFactory,
         private VideoGameRepository $videoGameRepository,
-        private Pagination  $pagination,
-    ) {
-    }
+        private Pagination $pagination,
+    ) {}
 
     public function getForm(): FormView
     {
@@ -52,7 +54,10 @@ final class VideoGamesList implements Countable, IteratorAggregate
     {
         $this->filter = new Filter();
 
-        $this->route = $request->attributes->get('_route');
+
+        /** @var string $route */
+        $route = $request->attributes->get('_route');
+        $this->route = $route;
         $this->routeParameters = $request->query->all();
 
         $this->form = $this->formFactory
@@ -62,7 +67,7 @@ final class VideoGamesList implements Countable, IteratorAggregate
                 [
                     'method' => Request::METHOD_GET,
                     'csrf_protection' => false,
-                ]
+                ],
             )
             ->handleRequest($request)
             ->createView();
@@ -77,8 +82,8 @@ final class VideoGamesList implements Countable, IteratorAggregate
                     1,
                     false,
                     'Première page',
-                    $this->generateUrl(1)
-                )
+                    $this->generateUrl(1),
+                ),
             );
 
             $this->pagination->add(
@@ -86,14 +91,14 @@ final class VideoGamesList implements Countable, IteratorAggregate
                     $this->pagination->getPage() - 1,
                     false,
                     'Précédent',
-                    $this->generateUrl($this->pagination->getPage() - 1)
-                )
+                    $this->generateUrl($this->pagination->getPage() - 1),
+                ),
             );
         }
 
         $pageRange = range(
             max(1, $this->pagination->getPage() - 3),
-            min($this->pagination->getLastPage(), $this->pagination->getPage() + 3)
+            min($this->pagination->getLastPage(), $this->pagination->getPage() + 3),
         );
 
         foreach ($pageRange as $page) {
@@ -102,8 +107,8 @@ final class VideoGamesList implements Countable, IteratorAggregate
                     $page,
                     $page === $this->pagination->getPage(),
                     (string) $page,
-                    $this->generateUrl($page)
-                )
+                    $this->generateUrl($page),
+                ),
             );
         }
 
@@ -113,8 +118,8 @@ final class VideoGamesList implements Countable, IteratorAggregate
                     $this->pagination->getPage() + 1,
                     false,
                     'Suivant',
-                    $this->generateUrl($this->pagination->getPage() + 1)
-                )
+                    $this->generateUrl($this->pagination->getPage() + 1),
+                ),
             );
 
             $this->pagination->add(
@@ -122,8 +127,8 @@ final class VideoGamesList implements Countable, IteratorAggregate
                     $this->pagination->getLastPage(),
                     false,
                     'Dernière page',
-                    $this->generateUrl($this->pagination->getLastPage())
-                )
+                    $this->generateUrl($this->pagination->getLastPage()),
+                ),
             );
         }
 
@@ -156,7 +161,7 @@ final class VideoGamesList implements Countable, IteratorAggregate
     {
         return $this->urlGenerator->generate(
             $this->route,
-            ['page' => $page] + $this->pagination->toArray() + $this->routeParameters
+            ['page' => $page] + $this->pagination->toArray() + $this->routeParameters,
         );
     }
 }

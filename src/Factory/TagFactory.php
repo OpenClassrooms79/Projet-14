@@ -20,6 +20,7 @@ final class TagFactory extends PersistentProxyObjectFactory
      */
     public function __construct()
     {
+        parent::__construct();
     }
 
     public static function class(): string
@@ -46,6 +47,6 @@ final class TagFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this// ->afterInstantiate(function(Tag $tag): void {})
-        ;
+            ;
     }
 }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Rating\RatingHandler;
+use App\Doctrine\Repository\VideoGameRepository;
 use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -27,7 +26,7 @@ use Symfony\Component\Validator\Constraints\Range;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
-#[Entity]
+#[Entity(repositoryClass: VideoGameRepository::class)]
 #[UniqueEntity('slug')]
 #[Uploadable]
 class VideoGame
@@ -60,10 +59,10 @@ class VideoGame
     private string $description;
 
     #[Column(type: Types::DATE_IMMUTABLE)]
-    private DateTimeInterface $releaseDate;
+    private DateTimeImmutable $releaseDate;
 
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private DateTimeImmutable $updatedAt;
+    private ?DateTimeImmutable $updatedAt;
 
     #[Column(type: Types::TEXT, nullable: true)]
     private ?string $test = null;
@@ -75,28 +74,28 @@ class VideoGame
     #[Column(nullable: true)]
     private ?int $averageRating = null;
 
-    #[Embedded(class: NumberOfRatingPerValue::class, columnPrefix: '')]
-    private NumberOfRatingPerValue $numberOfRatingsPerValue;
+    #[Embedded(class: NumberOfRatingsPerValue::class, columnPrefix: '')]
+    private NumberOfRatingsPerValue $numberOfRatingsPerValue;
 
     /**
-     * @var Collection<Tag>
+     * @var Collection<int, Tag>
      */
     #[ManyToMany(targetEntity: Tag::class)]
     #[JoinTable(name: 'video_game_tags')]
     private Collection $tags;
 
     /**
-     * @var Collection<Review>
+     * @var Collection<int, Review>
      */
     #[OneToMany(targetEntity: Review::class, mappedBy: 'videoGame')]
     private Collection $reviews;
 
     public function __construct()
     {
-        $this->numberOfRatingsPerValue = new NumberOfRatingPerValue();
         $this->tags = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->updatedAt = new DateTimeImmutable();
+        $this->numberOfRatingsPerValue = new NumberOfRatingsPerValue();
     }
 
     public function getId(): ?int
@@ -167,12 +166,12 @@ class VideoGame
         return $this;
     }
 
-    public function getReleaseDate(): DateTimeInterface
+    public function getReleaseDate(): DateTimeImmutable
     {
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(DateTimeInterface $releaseDate): VideoGame
+    public function setReleaseDate(DateTimeImmutable $releaseDate): VideoGame
     {
         $this->releaseDate = $releaseDate;
         return $this;
@@ -202,9 +201,6 @@ class VideoGame
 
     public function getAverageRating(): ?int
     {
-        $ratingHandler = new RatingHandler();
-        $ratingHandler->calculateAverage($this);
-
         return $this->averageRating;
     }
 
@@ -214,13 +210,13 @@ class VideoGame
         return $this;
     }
 
-    public function getNumberOfRatingsPerValue(): NumberOfRatingPerValue
+    public function getNumberOfRatingsPerValue(): NumberOfRatingsPerValue
     {
         return $this->numberOfRatingsPerValue;
     }
 
     /**
-     * @return Collection<Tag>
+     * @return Collection<int, Tag>
      */
     public function getTags(): Collection
     {
@@ -244,7 +240,7 @@ class VideoGame
     }
 
     /**
-     * @return Collection<Review>
+     * @return Collection<int, Review>
      */
     public function getReviews(): Collection
     {
@@ -269,6 +265,6 @@ class VideoGame
 
     public function hasAlreadyReview(User $user): bool
     {
-        return $this->reviews->exists(static fn (int $key, Review $review): bool => $review->getUser() === $user);
+        return $this->reviews->exists(static fn(int $key, Review $review): bool => $review->getUser() === $user);
     }
 }

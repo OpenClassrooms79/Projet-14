@@ -11,17 +11,18 @@
                             <span class="badge bg-primary">{{ tag.name }}</span>
                         {% endfor %}
                     </div>
-                    <small class="text-muted">Sortie: {{ video_game.releaseDate|date('m/d/Y') }}</small>
+                    <small class="text-muted">Sortie: {{ video_game.releaseDate|date('d/m/Y') }}</small>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ vich_uploader_asset(video_game, 'imageFile', 'App\\Model\\Entity\\VideoGame') }}" class="img-fluid rounded" alt="Couverture de {{ video_game.title|e }}">
+                <img src="{{ vich_uploader_asset(video_game, 'imageFile', 'App\\Model\\Entity\\VideoGame') }}"
+                     class="img-fluid rounded" alt="Couverture de {{ video_game.title|e }}">
                 <div class="ratings justify-content-between mt-3">
-                    <twig:Rating rating="{{ video_game.rating }}" label="Test" />
+                    <twig:Rating rating="{{ video_game.rating }}" label="Test"/>
                     {% if video_game.averageRating is not null %}
-                        <twig:Rating rating="{{ video_game.averageRating }}" label="Avis" />
+                        <twig:Rating rating="{{ video_game.averageRating }}" label="Avis"/>
                     {% endif %}
                 </div>
                 <div class="mt-4">
@@ -75,12 +76,12 @@
                             {% if is_granted('review', video_game) %}
                                 <div class="mb-4">
                                     {{ form_start(form) }}
-                                        {{ form_errors(form) }}
-                                        <fieldset class="mb-3">
-                                            {{ form_row(form.rating) }}
-                                            {{ form_row(form.comment) }}
-                                        </fieldset>
-                                        <button class="btn btn-primary py-2" type="submit">Poster</button>
+                                    {{ form_errors(form) }}
+                                    <fieldset class="mb-3">
+                                        {{ form_row(form.rating) }}
+                                        {{ form_row(form.comment) }}
+                                    </fieldset>
+                                    <button class="btn btn-primary py-2" type="submit">Poster</button>
                                     {{ form_end(form) }}
                                 </div>
                             {% endif %}
