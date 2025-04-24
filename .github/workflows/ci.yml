@@ -3,7 +3,7 @@ name: Continuous integration
 on:
   push:
     branches:
-      - main  # branche de déploiement
+      - '**'  # Déclenche l'action sur toutes les branches
 
 jobs:
   ci:
