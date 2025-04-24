@@ -10,7 +10,7 @@ class TagFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        TagFactory::createMany(60);
+        TagFactory::createMany(25);
         $manager->flush();
     }
 }
