@@ -44,8 +44,8 @@ final class ReviewFactory extends PersistentProxyObjectFactory
             $existingReview = $this->entityManager
                 ->getRepository(Review::class)
                 ->findOneBy([
-                    'user' => $user->getId(),
-                    'videoGame' => $videoGame->getId(),
+                    'user' => $user->getId(),  // Utiliser l'ID du user
+                    'videoGame' => $videoGame->getId(),  // Utiliser l'ID du jeu vidéo
                 ]);
         } while ($existingReview); // tant qu'on trouve une combinaison existante, on recommence
 
