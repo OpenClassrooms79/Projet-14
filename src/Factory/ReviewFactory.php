@@ -31,7 +31,6 @@ final class ReviewFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
-     * @todo add your default values here
      * @return array<string, mixed>
      */
     protected function defaults(): array
@@ -45,8 +44,8 @@ final class ReviewFactory extends PersistentProxyObjectFactory
             $existingReview = $this->entityManager
                 ->getRepository(Review::class)
                 ->findOneBy([
-                    'user' => $user,
-                    'videoGame' => $videoGame,
+                    'user' => $user->getId(),
+                    'videoGame' => $videoGame->getId(),
                 ]);
         } while ($existingReview); // tant qu'on trouve une combinaison existante, on recommence
 
