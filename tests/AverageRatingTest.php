@@ -18,7 +18,7 @@ class AverageRatingTest extends TestCase
         $ratingHandler = new RatingHandler();
         $ratingHandler->calculateAverage($videoGame);
 
-        $this->assertEquals(null, $videoGame->getAverageRating());
+        self::assertEquals(null, $videoGame->getAverageRating());
     }
 
     public function testAverageRating(): void
@@ -32,7 +32,7 @@ class AverageRatingTest extends TestCase
         $ratingHandler = new RatingHandler();
         $ratingHandler->calculateAverage($videoGame);
 
-        $this->assertEquals(4.0, $videoGame->getAverageRating());
+        self::assertEquals(4.0, $videoGame->getAverageRating());
     }
 
     public function testAverageRatingRandom(): void
@@ -51,6 +51,6 @@ class AverageRatingTest extends TestCase
 
         $expectedRating = ceil($sum / 50);
 
-        $this->assertEquals($expectedRating, $videoGame->getAverageRating());
+        self::assertEquals($expectedRating, $videoGame->getAverageRating());
     }
 }

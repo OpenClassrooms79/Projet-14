@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Doctrine\Repository\ReviewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -12,11 +11,17 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\Validator\Constraints\Range;
 
-#[Entity(repositoryClass: ReviewRepository::class)]
-#[UniqueConstraint(name: 'UNIQUE_VIDEOGAME_USER', columns: ['video_game_id', 'user_id'])]
+#[Entity]
+#[Table(
+    name: 'review',
+    uniqueConstraints: [
+        new UniqueConstraint(name: 'UNIQUE_VIDEOGAME_USER', columns: ['video_game_id', 'user_id']),
+    ]
+)]
 class Review
 {
     #[Id]
@@ -28,7 +33,7 @@ class Review
     #[JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private VideoGame $videoGame;
 
-    #[ManyToOne(targetEntity: User::class)]
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'reviews')]
     #[JoinColumn(nullable: false)]
     private User $user;
 

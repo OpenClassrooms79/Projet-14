@@ -3,10 +3,7 @@
 namespace App\Factory;
 
 use App\Model\Entity\Tag;
-use Doctrine\ORM\EntityRepository;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
  * @extends PersistentProxyObjectFactory<Tag>
@@ -32,12 +29,12 @@ final class TagFactory extends PersistentProxyObjectFactory
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      * @todo add your default values here
+     * @return array<string, mixed>
      */
-    protected function defaults(): array|callable
+    protected function defaults(): array
     {
         return [
-            'code' => self::faker()->unique()->word(),
-            'name' => self::faker()->unique()->word(),
+            'name' => '',
         ];
     }
 
@@ -46,7 +43,9 @@ final class TagFactory extends PersistentProxyObjectFactory
      */
     protected function initialize(): static
     {
-        return $this// ->afterInstantiate(function(Tag $tag): void {})
-            ;
+        return $this
+            ->afterPersist(function (Tag $tag): void {
+                $tag->setName('Tag ' . $tag->getId());
+            });
     }
 }

@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use Gedmo\Mapping\Annotation\Slug;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
@@ -27,6 +28,7 @@ use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 #[Entity(repositoryClass: VideoGameRepository::class)]
+#[Table('`video_game`')]
 #[UniqueEntity('slug')]
 #[Uploadable]
 class VideoGame

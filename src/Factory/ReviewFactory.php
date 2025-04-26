@@ -3,11 +3,10 @@
 namespace App\Factory;
 
 use App\Model\Entity\Review;
+use App\Model\Entity\User;
+use App\Model\Entity\VideoGame;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
  * @extends PersistentProxyObjectFactory<Review>
@@ -32,9 +31,9 @@ final class ReviewFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
-     * @todo add your default values here
+     * @return array<string, mixed>
      */
-    protected function defaults(): array|callable
+    protected function defaults(): array
     {
         // boucle jusqu'à ce que l'on trouve une combinaison unique
         do {
@@ -65,6 +64,6 @@ final class ReviewFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this// ->afterInstantiate(function(Review $review): void {})
-        ;
+            ;
     }
 }

@@ -26,14 +26,15 @@ final class VideoGameRepository extends ServiceEntityRepository
      */
     public function getVideoGames(Pagination $pagination, Filter $filter): Paginator
     {
-        $queryBuilder = $this->createQueryBuilder('vg')
+        $queryBuilder = $this
+            ->createQueryBuilder('vg')
             ->addSelect('t')
             ->leftJoin('vg.tags', 't')
             ->setFirstResult($pagination->getOffset())
             ->setMaxResults($pagination->getLimit())
             ->orderBy(
                 $pagination->getSorting()->getSql(),
-                $pagination->getDirection()->getSql()
+                $pagination->getDirection()->getSql(),
             );
 
         if ($filter->getSearch() !== null) {
@@ -43,14 +44,15 @@ final class VideoGameRepository extends ServiceEntityRepository
                         $queryBuilder->expr()->like('vg.title', ':search'),
                         $queryBuilder->expr()->like('vg.description', ':search'),
                         $queryBuilder->expr()->like('vg.test', ':search'),
-                    )
+                    ),
                 )
                 ->setParameter('search', '%' . $filter->getSearch() . '%');
         }
 
         if ([] !== $filter->getTags()) {
             // Utilisez une sous-requête pour filtrer les jeux ayant tous les tags requis
-            $subQuery = $this->getEntityManager()->createQueryBuilder()
+            $subQuery = $this
+                ->getEntityManager()->createQueryBuilder()
                 ->select('vg2.id')
                 ->from(VideoGame::class, 'vg2')
                 ->join('vg2.tags', 't2')
@@ -64,6 +66,11 @@ final class VideoGameRepository extends ServiceEntityRepository
                 ->setParameter('tagCount', count($filter->getTags()));
         }
 
-        return new Paginator($queryBuilder, fetchJoinCollection: true);
+        // Spécifier explicitement le type de Paginator
+        /** @var Paginator<VideoGame> $paginator */
+        $paginator = new Paginator($queryBuilder, fetchJoinCollection: true);
+
+        // Forcer Doctrine à reconnaître le type
+        return $paginator;
     }
 }
