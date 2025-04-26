@@ -10,12 +10,9 @@ use App\Tests\Functional\FunctionalTestCase;
 final class FilterTest extends FunctionalTestCase
 {
     /**
-     * @return iterable<string, array{
-     *     tags: array<int>,
-     *     expectedCount: int
-     * }>
+     * @return iterable<array{tags: array<int>, expectedCount: int}>
      */
-    public static function filterTagsDataProvider(): array
+    public static function filterTagsDataProvider(): iterable
     {
         // les nombres correspondent à la position de chaque tag dans la liste des tags sur la page web
         return [
@@ -49,7 +46,7 @@ final class FilterTest extends FunctionalTestCase
     /**
      * @dataProvider filterTagsDataProvider
      *
-     * @param array $tags
+     * @param array<int> $tags
      * @param int $expectedCount
      * @return void
      */
@@ -63,7 +60,7 @@ final class FilterTest extends FunctionalTestCase
         foreach ($tags as $tagIndex) {
             // $tagIndex correspond à la position du tag dans la liste de tags à l'écran (1 à 25)
             $realTag = $allTags[$tagIndex - 1]; // Récupère le tag réel basé sur la position (0-indexé dans le tableau)
-            $form_params["filter[tags][" . $tagIndex . "]"] = $realTag->getId() + 1;
+            $form_params["filter[tags][" . $tagIndex . "]"] = ($realTag->getId() ?? 0) + 1;
         }
 
         $this->get('/');

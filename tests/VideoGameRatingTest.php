@@ -47,7 +47,7 @@ class VideoGameRatingTest extends WebTestCase
         $userAndGame = $this->getRandomUserAndGameWithoutReview();
 
         if ($userAndGame === null) {
-            $this->fail('Aucun couple (user, game) sans review trouvé.');
+            self::fail('Aucun couple (user, game) sans review trouvé.');
         }
         $user = $userAndGame['user'];
         $game = $userAndGame['game'];
@@ -59,11 +59,6 @@ class VideoGameRatingTest extends WebTestCase
         $rating = random_int(1, 5);;
 
         $this->addReview($client, $user, $game, $comment, $rating);
-        // Vérifier que le commentaire a bien été ajouté dans la base de données
-        $em = static::getContainer()->get(EntityManagerInterface::class);
-        $newReview = $em->getRepository(Review::class)->findOneBy([
-            'comment' => $comment,
-        ]);
     }
 
     /**
@@ -124,6 +119,8 @@ class VideoGameRatingTest extends WebTestCase
 
     /**
      * Récupère une paire (user, game) qui n'a pas encore de review associée
+     *
+     * @return array{user: User, game: VideoGame}|null
      */
     private function getRandomUserAndGameWithoutReview(): ?array
     {
@@ -144,13 +141,17 @@ class VideoGameRatingTest extends WebTestCase
         // Exécuter la requête et récupérer un seul résultat
         $userGamePairs = $qb->getQuery()->getResult();
 
-        if (empty($userGamePairs)) {
+        if (count($userGamePairs) === 0) {
             return null;  // Aucun résultat trouvé
         }
 
+        /** @var User $user */
+        /** @var VideoGame $game */
+        [$user, $game] = $userGamePairs;
+
         return [
-            'user' => $userGamePairs[0],
-            'game' => $userGamePairs[1],
+            'user' => $user,
+            'game' => $game,
         ];
     }
 }
