@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Doctrine\EntityListener\UserListener;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\EntityListeners;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,6 +22,7 @@ use Symfony\Component\Validator\Constraints\NoSuspiciousCharacters;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
+use Doctrine\Common\Collections\Collection;
 
 #[Entity]
 #[Table('`user`')]
@@ -51,6 +54,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotCompromisedPassword]
     #[PasswordStrength]
     private ?string $plainPassword = null;
+
+    /**
+     * @var Collection<int, Review>
+     */
+    #[OneToMany(targetEntity: Review::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $reviews;
+
+    public function __construct()
+    {
+        $this->reviews = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,5 +128,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
     }
 }

@@ -105,7 +105,7 @@ class VideoGameRatingTest extends WebTestCase
         ]);
 
         self::assertNotNull($newReview, "Le commentaire n'a pas été trouvé dans la base de données.");
-        self::assertEquals($user, $newReview->getUser(), "L'utilisateur associé au commentaire est incorrect.");
+        self::assertEquals($user->getId(), $newReview->getUser()->getId(), "L'utilisateur associé au commentaire est incorrect.");
         self::assertEquals($videoGame->getId(), $newReview->getVideoGame()->getId(), "Le jeu vidéo associé au commentaire est incorrect.");
         self::assertEquals($comment, $newReview->getComment(), 'Le commentaire est incorrect.');
         self::assertEquals($rating, $newReview->getRating(), 'La note du commentaire est incorrecte.');
